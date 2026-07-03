@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useCallback, useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import VaultStatus from "@/app/components/VaultStatus";
 import SwapHistory from "@/app/components/SwapHistory";
 import CreateSchedule from "@/app/components/CreateSchedule";
+import DepositForm from "@/app/components/DepositForm";
 import { getVault, getHistory, SwapEvent } from "@/lib/stellar";
 
 function VaultDashboard() {
@@ -16,7 +17,7 @@ function VaultDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadVault = useCallback(() => {
     if (!owner) return;
     setLoading(true);
     setError(null);
@@ -31,6 +32,10 @@ function VaultDashboard() {
       })
       .finally(() => setLoading(false));
   }, [owner]);
+
+  useEffect(() => {
+    loadVault();
+  }, [loadVault]);
 
   if (!owner) {
     return (
@@ -72,6 +77,14 @@ function VaultDashboard() {
           }
         />
       )}
+
+      <DepositForm
+        owner={owner}
+        onSuccess={() => {
+          // Re-fetch the authoritative vault state after a confirmed deposit.
+          loadVault();
+        }}
+      />
 
       <CreateSchedule
         onSubmit={async (values) => {

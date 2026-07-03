@@ -4,6 +4,39 @@ This file tracks every edit, decision, and development session for the `dca-vaul
 
 ## Session log
 
+### Session 2 — 2026-07-03
+
+**Implement deposit transaction signing via Freighter.** The UI had no way to
+fund a vault — `CreateSchedule`'s `onSubmit` was a `console.log`/`alert` stub.
+Built the full sign-and-submit flow for the contract's
+`deposit(owner: Address, amount: i128)` entrypoint (requires owner auth).
+
+- **`lib/contract.ts`** (new): keeps transaction plumbing out of the component.
+  - `buildDepositTx(owner, amountStroops, accountSequence, networkPassphrase)`
+    — constructs the unsigned Soroban tx (`Account` source = owner, `Contract`
+    call to `deposit` with the owner `Address` and an `i128` amount built via
+    `nativeToScVal`). Reads `NEXT_PUBLIC_CONTRACT_ID`.
+  - `submitSignedTx(signedXdr, rpcUrl)` — rebuilds the signed tx from XDR,
+    `sendTransaction`, then polls `getTransaction` every 3s (max 20 tries) for
+    SUCCESS/FAILED — same pattern as the backend executor. Returns the tx hash.
+  - `readVaultBalance(owner, rpcUrl)` — simulates `get_vault` (read-only, no
+    signature) to fetch the authoritative post-deposit balance in stroops.
+- **`app/components/DepositForm.tsx`** (new): props `{ owner, onSuccess }`.
+  Amount entered in XLM, converted to stroops (`* 1e7`). On submit:
+  getAccount → buildDepositTx → `simulateTransaction` → `assembleTransaction`
+  → Freighter `signTransaction` → `submitSignedTx` → `readVaultBalance` →
+  `onSuccess(newBalance)`. Loading state disables the form; errors surface
+  inline. Styling matches `CreateSchedule`.
+- **`app/vault/page.tsx`**: rendered `DepositForm` below `VaultStatus`.
+  Refactored the vault-loading effect into a `loadVault` `useCallback` so the
+  deposit's `onSuccess` can re-fetch the authoritative vault state.
+- **env**: added `NEXT_PUBLIC_RPC_URL` (default
+  `https://soroban-testnet.stellar.org`) to `.env.local` and
+  `.env.local.example` — the frontend now talks to Soroban RPC directly, not
+  just the backend API.
+
+`npx tsc --noEmit` and `npm run build` both pass with zero errors.
+
 ### Session 1 — 2026-07-01
 
 **Initial scaffold: Next.js 16 app router, Freighter wallet integration, backend API wrappers, four UI components, landing page, vault dashboard.**
