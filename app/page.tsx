@@ -17,7 +17,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-gray-50">
       <div className="max-w-md w-full space-y-8 text-center">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900">StellarDCA</h1>
+          <h1 className="text-4xl font-bold text-gray-900">AureumDCA</h1>
           <p className="mt-3 text-lg text-gray-500">
             Trustless dollar-cost averaging on Stellar. Deposit XLM, set a
             schedule, let the vault do the rest.

@@ -1,6 +1,6 @@
 # Contributing to dca-vault-frontend
 
-Welcome! This repo is the user-facing frontend for StellarDCA: a Next.js dashboard with Freighter wallet integration where users connect their Stellar wallet, view their DCA vault status, and (soon) create and manage schedules. It's part of the **Stellar Drips Wave contributor program**, which rewards merged contributions with on-chain Drips payments. Maintainers assign complexity/points labels after review.
+Welcome! This repo is the user-facing frontend for AureumDCA: a Next.js dashboard with Freighter wallet integration where users connect their Stellar wallet, view their DCA vault status, and (soon) create and manage schedules. It's part of the **Stellar Drips Wave contributor program**, which rewards merged contributions with on-chain Drips payments. Maintainers assign complexity/points labels after review.
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ Welcome! This repo is the user-facing frontend for StellarDCA: a Next.js dashboa
 ## Getting started
 
 ```sh
-git clone https://github.com/StellarDCA/dca-vault-frontend.git
+git clone https://github.com/AureumDCA/dca-vault-frontend.git
 cd dca-vault-frontend
 npm ci
 cp .env.local.example .env.local

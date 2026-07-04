@@ -1,6 +1,6 @@
 # DCA Vault Frontend
 
-The user-facing web app for [StellarDCA](https://github.com/StellarDCA): vault creation, dashboard, and portfolio UI built with Next.js 16, Tailwind CSS, and the Freighter wallet extension.
+The user-facing web app for [AureumDCA](https://github.com/AureumDCA): vault creation, dashboard, and portfolio UI built with Next.js 16, Tailwind CSS, and the Freighter wallet extension.
 
 Users connect their Stellar wallet via Freighter, view their on-chain DCA vault status and swap history, and (coming soon) create and manage recurring swap schedules directly from the browser — all without handing custody of their funds to anyone.
 
@@ -32,10 +32,10 @@ Copy `.env.local.example` to `.env.local` and fill in the values.
 
 ## Setup
 
-Requires [dca-vault-backend](https://github.com/StellarDCA/dca-vault-backend) running locally and [Freighter](https://freighter.app) installed in your browser.
+Requires [dca-vault-backend](https://github.com/AureumDCA/dca-vault-backend) running locally and [Freighter](https://freighter.app) installed in your browser.
 
 ```sh
-git clone https://github.com/StellarDCA/dca-vault-frontend.git
+git clone https://github.com/AureumDCA/dca-vault-frontend.git
 cd dca-vault-frontend
 npm ci
 cp .env.local.example .env.local
