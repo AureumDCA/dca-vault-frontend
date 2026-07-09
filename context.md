@@ -4,6 +4,35 @@ This file tracks every edit, decision, and development session for the `dca-vaul
 
 ## Session log
 
+### Session 3 — 2026-07-09
+
+**Closed issue #1: `create_schedule` transaction signing via Freighter.**
+
+`CreateSchedule`'s `onSubmit` was a stub (`console.log` + `alert`). Wired it
+to the real flow in `app/vault/page.tsx`, following the same
+simulate → assemble → sign → submit/poll shape `DepositForm` already
+established:
+
+- **`lib/contract.ts`**: added `buildCreateScheduleTx(owner, params,
+  accountSequence, networkPassphrase)`. The tricky part is `frequency`: the
+  contract's `Frequency` enum is a fieldless `#[contracttype]` variant, whose
+  wire shape is a one-element vec of a symbol (this app already assumes that
+  shape when *reading* it back — see `VaultStatus.tsx`'s `formatFrequency`,
+  which unwraps `["Weekly"]`). Building the same shape going the other
+  direction is `nativeToScVal([frequency], { type: ["symbol"] })` — confirmed
+  against `@stellar/stellar-base/lib/scval.js`'s documented behavior for
+  array + type-hint inputs, rather than guessing.
+- **`app/vault/page.tsx`**: `CreateSchedule`'s `onSubmit` (unlike
+  `DepositForm`, which owns its whole flow internally) is a prop the parent
+  page implements, so the signing flow lives here: parse/validate the form's
+  XLM amount and bps, `buildCreateScheduleTx`, `simulateTransaction`,
+  `assembleTransaction`, Freighter `signTransaction`, `submitSignedTx`, then
+  `loadVault()` to refresh the dashboard. Thrown errors surface through
+  `CreateSchedule`'s existing try/catch + error-state UI, so no new
+  error-handling plumbing was needed there.
+
+`npx tsc --noEmit` and `npm run build` both pass with zero errors.
+
 ### Session 2 — 2026-07-03
 
 **Implement deposit transaction signing via Freighter.** The UI had no way to

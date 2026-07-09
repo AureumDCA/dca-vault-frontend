@@ -46,6 +46,54 @@ export function buildDepositTx(
     .build();
 }
 
+export interface CreateScheduleParams {
+  frequency: "Daily" | "Weekly" | "Monthly";
+  amountPerExecutionStroops: bigint;
+  targetAsset: string;
+  poolAddress: string;
+  minAmountOutBps: number;
+}
+
+/**
+ * Builds the unsigned Soroban transaction that calls
+ * `create_schedule(owner, frequency, amount_per_execution, target_asset,
+ * pool_address, min_amount_out_bps)` on the vault contract. `frequency` is
+ * encoded as a one-element symbol vec (`nativeToScVal([frequency], { type:
+ * ["symbol"] })`), matching the wire shape soroban-sdk's `#[contracttype]`
+ * derive uses for a fieldless enum variant — the same shape `scValToNative`
+ * hands back elsewhere in this app as e.g. `["Weekly"]` (see
+ * VaultStatus.tsx's `formatFrequency`).
+ */
+export function buildCreateScheduleTx(
+  owner: string,
+  params: CreateScheduleParams,
+  accountSequence: string,
+  networkPassphrase: string
+): Transaction {
+  if (!CONTRACT_ID) throw new Error("NEXT_PUBLIC_CONTRACT_ID is not set");
+
+  const source = new Account(owner, accountSequence);
+  const contract = new Contract(CONTRACT_ID);
+
+  return new TransactionBuilder(source, {
+    fee: BASE_FEE,
+    networkPassphrase,
+  })
+    .addOperation(
+      contract.call(
+        "create_schedule",
+        new Address(owner).toScVal(),
+        nativeToScVal([params.frequency], { type: ["symbol"] }),
+        nativeToScVal(params.amountPerExecutionStroops, { type: "i128" }),
+        new Address(params.targetAsset).toScVal(),
+        new Address(params.poolAddress).toScVal(),
+        nativeToScVal(params.minAmountOutBps, { type: "u32" })
+      )
+    )
+    .setTimeout(30)
+    .build();
+}
+
 /**
  * Submits an already-signed transaction XDR to the Soroban RPC and polls until
  * it is confirmed. Resolves with the transaction hash on SUCCESS; throws on a

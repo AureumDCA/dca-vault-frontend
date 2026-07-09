@@ -2,11 +2,19 @@
 
 import { useCallback, useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { rpc } from "@stellar/stellar-sdk";
 import VaultStatus from "@/app/components/VaultStatus";
 import SwapHistory from "@/app/components/SwapHistory";
 import CreateSchedule from "@/app/components/CreateSchedule";
 import DepositForm from "@/app/components/DepositForm";
 import { getVault, getHistory, SwapEvent } from "@/lib/stellar";
+import { buildCreateScheduleTx, submitSignedTx } from "@/lib/contract";
+import { signTransaction } from "@/lib/freighter";
+
+const RPC_URL =
+  process.env.NEXT_PUBLIC_RPC_URL ?? "https://soroban-testnet.stellar.org";
+const NETWORK_PASSPHRASE = process.env.NEXT_PUBLIC_NETWORK_PASSPHRASE ?? "";
+const STROOPS_PER_XLM = 1e7;
 
 function VaultDashboard() {
   const params = useSearchParams();
@@ -88,10 +96,47 @@ function VaultDashboard() {
 
       <CreateSchedule
         onSubmit={async (values) => {
-          // TODO: build and sign the create_schedule transaction via freighter,
-          // then submit via stellar-sdk. Requires EXECUTOR_SECRET or user signature.
-          console.log("create_schedule payload", values);
-          alert("Transaction signing not yet implemented — check console.");
+          const xlm = parseFloat(values.amountPerExecution);
+          if (!Number.isFinite(xlm) || xlm <= 0) {
+            throw new Error("Amount per execution must be a positive number.");
+          }
+          const minAmountOutBps = parseInt(values.minAmountOutBps, 10);
+          if (!Number.isFinite(minAmountOutBps)) {
+            throw new Error("Slippage tolerance must be a number.");
+          }
+
+          const server = new rpc.Server(RPC_URL);
+          const account = await server.getAccount(owner);
+
+          // Build the unsigned create_schedule transaction.
+          const tx = buildCreateScheduleTx(
+            owner,
+            {
+              frequency: values.frequency,
+              amountPerExecutionStroops: BigInt(Math.round(xlm * STROOPS_PER_XLM)),
+              targetAsset: values.targetAsset,
+              poolAddress: values.poolAddress,
+              minAmountOutBps,
+            },
+            account.sequenceNumber(),
+            NETWORK_PASSPHRASE
+          );
+
+          // Simulate to gather the Soroban footprint and resource fees.
+          const sim = await server.simulateTransaction(tx);
+          if (!rpc.Api.isSimulationSuccess(sim)) {
+            throw new Error(
+              "Simulation failed — check the target asset and pool addresses."
+            );
+          }
+
+          // Assemble, sign with Freighter, then submit and poll for confirmation.
+          const assembled = rpc.assembleTransaction(tx, sim).build();
+          const signedXdr = await signTransaction(assembled.toXDR(), NETWORK_PASSPHRASE);
+          await submitSignedTx(signedXdr, RPC_URL);
+
+          // Refresh vault state so the new schedule shows up immediately.
+          loadVault();
         }}
       />
 
