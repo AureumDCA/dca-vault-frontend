@@ -4,6 +4,20 @@ This file tracks every edit, decision, and development session for the `dca-vaul
 
 ## Session log
 
+### Session 6 — 2026-07-12
+
+**CI: bump GitHub Actions to latest stable.** Same pair as
+dca-vault-backend, verified via `gh api repos/<owner>/<repo>/releases`
+before changing anything:
+
+- **`actions/checkout`**: `v4` → `v7` (v7.0.0, published 2026-06-18).
+- **`actions/setup-node`**: `v4` → `v6` (v6.4.0, published 2026-04-20).
+
+`node-version: 20` left untouched — Node.js runtime version, not a GitHub
+Action version, out of scope for this bump.
+
+`npx tsc --noEmit` and `npm run build` both pass with zero errors.
+
 ### Session 5 — 2026-07-11
 
 **Re-theme: gold + dark navy instead of white.** Requested design change —
