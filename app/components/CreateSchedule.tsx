@@ -43,15 +43,15 @@ export default function CreateSchedule({ onSubmit }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6 space-y-4">
-      <h2 className="text-lg font-semibold text-gray-800">Create Schedule</h2>
+    <form onSubmit={handleSubmit} className="bg-slate-900 border border-slate-800 rounded-xl shadow-lg shadow-black/20 p-6 space-y-4">
+      <h2 className="text-lg font-semibold text-slate-100">Create Schedule</h2>
 
       <div className="space-y-1">
-        <label className="text-sm text-gray-600">Frequency</label>
+        <label className="text-sm text-slate-400">Frequency</label>
         <select
           value={values.frequency}
           onChange={(e) => set("frequency", e.target.value as FormValues["frequency"])}
-          className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-slate-700 bg-slate-800 text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
         >
           <option value="Daily">Daily</option>
           <option value="Weekly">Weekly</option>
@@ -60,7 +60,7 @@ export default function CreateSchedule({ onSubmit }: Props) {
       </div>
 
       <div className="space-y-1">
-        <label className="text-sm text-gray-600">Amount per execution (XLM)</label>
+        <label className="text-sm text-slate-400">Amount per execution (XLM)</label>
         <input
           type="number"
           min="0"
@@ -69,36 +69,36 @@ export default function CreateSchedule({ onSubmit }: Props) {
           onChange={(e) => set("amountPerExecution", e.target.value)}
           placeholder="e.g. 10"
           required
-          className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-slate-700 bg-slate-800 text-slate-100 placeholder:text-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
         />
       </div>
 
       <div className="space-y-1">
-        <label className="text-sm text-gray-600">Target asset contract ID</label>
+        <label className="text-sm text-slate-400">Target asset contract ID</label>
         <input
           type="text"
           value={values.targetAsset}
           onChange={(e) => set("targetAsset", e.target.value)}
           placeholder="C…"
           required
-          className="w-full border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-slate-700 bg-slate-800 text-slate-100 placeholder:text-slate-500 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-amber-400"
         />
       </div>
 
       <div className="space-y-1">
-        <label className="text-sm text-gray-600">Pool contract address</label>
+        <label className="text-sm text-slate-400">Pool contract address</label>
         <input
           type="text"
           value={values.poolAddress}
           onChange={(e) => set("poolAddress", e.target.value)}
           placeholder="C…"
           required
-          className="w-full border rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-slate-700 bg-slate-800 text-slate-100 placeholder:text-slate-500 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-amber-400"
         />
       </div>
 
       <div className="space-y-1">
-        <label className="text-sm text-gray-600">
+        <label className="text-sm text-slate-400">
           Slippage tolerance (bps, e.g. 9500 = 95%)
         </label>
         <input
@@ -108,16 +108,16 @@ export default function CreateSchedule({ onSubmit }: Props) {
           value={values.minAmountOutBps}
           onChange={(e) => set("minAmountOutBps", e.target.value)}
           required
-          className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-slate-700 bg-slate-800 text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
         />
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-red-400 text-sm">{error}</p>}
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+        className="w-full px-4 py-2 bg-amber-400 text-slate-900 font-semibold rounded-lg hover:bg-amber-300 disabled:opacity-50 transition-colors"
       >
         {loading ? "Submitting…" : "Create Schedule"}
       </button>

@@ -79,12 +79,12 @@ export default function DepositForm({ owner, onSuccess }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white rounded-xl shadow p-6 space-y-4"
+      className="bg-slate-900 border border-slate-800 rounded-xl shadow-lg shadow-black/20 p-6 space-y-4"
     >
-      <h2 className="text-lg font-semibold text-gray-800">Deposit Funds</h2>
+      <h2 className="text-lg font-semibold text-slate-100">Deposit Funds</h2>
 
       <div className="space-y-1">
-        <label className="text-sm text-gray-600">Amount (XLM)</label>
+        <label className="text-sm text-slate-400">Amount (XLM)</label>
         <input
           type="number"
           min="0"
@@ -94,19 +94,19 @@ export default function DepositForm({ owner, onSuccess }: Props) {
           placeholder="e.g. 100"
           required
           disabled={loading}
-          className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+          className="w-full border border-slate-700 bg-slate-800 text-slate-100 placeholder:text-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
         />
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-slate-500">
           Signed with Freighter and sent to the vault contract.
         </p>
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-red-400 text-sm">{error}</p>}
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+        className="w-full px-4 py-2 bg-amber-400 text-slate-900 font-semibold rounded-lg hover:bg-amber-300 disabled:opacity-50 transition-colors"
       >
         {loading ? "Depositing…" : "Deposit"}
       </button>

@@ -47,21 +47,21 @@ function VaultDashboard() {
 
   if (!owner) {
     return (
-      <p className="text-gray-500">No owner specified. Connect your wallet first.</p>
+      <p className="text-slate-400">No owner specified. Connect your wallet first.</p>
     );
   }
 
   if (loading) {
-    return <p className="text-gray-500 animate-pulse">Loading vault…</p>;
+    return <p className="text-slate-400 animate-pulse">Loading vault…</p>;
   }
 
   if (error) {
-    return <p className="text-red-500">{error}</p>;
+    return <p className="text-red-400">{error}</p>;
   }
 
   return (
     <div className="space-y-6">
-      <div className="text-xs text-gray-400 font-mono break-all">
+      <div className="text-xs text-slate-500 font-mono break-all">
         Owner: {owner}
       </div>
 
@@ -147,10 +147,10 @@ function VaultDashboard() {
 
 export default function VaultPage() {
   return (
-    <main className="min-h-screen bg-gray-50 p-8">
+    <main className="min-h-screen bg-slate-950 p-8">
       <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Your Vault</h1>
-        <Suspense fallback={<p className="text-gray-400 animate-pulse">Loading…</p>}>
+        <h1 className="text-2xl font-bold text-amber-400">Your Vault</h1>
+        <Suspense fallback={<p className="text-slate-400 animate-pulse">Loading…</p>}>
           <VaultDashboard />
         </Suspense>
       </div>

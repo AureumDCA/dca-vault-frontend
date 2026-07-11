@@ -4,6 +4,37 @@ This file tracks every edit, decision, and development session for the `dca-vaul
 
 ## Session log
 
+### Session 5 — 2026-07-11
+
+**Re-theme: gold + dark navy instead of white.** Requested design change —
+swapped the entire UI's white/indigo palette for a dark-navy/gold one, using
+plain Tailwind utilities (matching the codebase's existing convention, no
+custom `@theme` tokens):
+
+- Page background `bg-gray-50` → `bg-slate-950`; cards `bg-white` →
+  `bg-slate-900 border border-slate-800 shadow-lg shadow-black/20`.
+- Primary actions `bg-indigo-600`/`hover:bg-indigo-700` (white text) →
+  `bg-amber-400`/`hover:bg-amber-300` with dark (`text-slate-900`) text for
+  contrast; focus rings `ring-indigo-500` → `ring-amber-400`.
+- Text hierarchy: `text-gray-900/800/700/600/500/400` → the equivalent
+  `slate-100/100/300/400/400/500` scale; brand heading ("AureumDCA", "Your
+  Vault") and the vault balance figure use `text-amber-400` as a gold accent.
+  Error text `red-500` → `red-400` (better contrast on dark). "Paused" badge
+  `yellow-100/yellow-800` → `amber-400/10` bg with `amber-300` text.
+- `globals.css`: root `--background`/`--foreground` now dark navy (`#020617`)
+  / light (`#f1f5f9`); removed the `prefers-color-scheme: dark` media query
+  since gold-on-navy is now the fixed brand theme, not something that should
+  flip with system light/dark preference.
+
+Verified visually before committing, not just via typecheck: ran the dev
+server and screenshotted both the landing page and a full vault dashboard
+(temporarily injected mock vault/history data into `loadVault` for the
+screenshot only, then reverted verbatim — confirmed via `git diff --stat`
+matching the pre-mock diff and a clean `tsc` — since no funded test vault
+exists on the live backend to render the four cards with real data).
+
+`npx tsc --noEmit` and `npm run build` both pass with zero errors.
+
 ### Session 4 — 2026-07-11
 
 **README: CI/License badges + Live Deployment section + real screenshot.**
