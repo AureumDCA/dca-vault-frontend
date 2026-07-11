@@ -4,6 +4,34 @@ This file tracks every edit, decision, and development session for the `dca-vaul
 
 ## Session log
 
+### Session 4 — 2026-07-11
+
+**README: CI/License badges + Live Deployment section + real screenshot.**
+Added `CI` and `License: MIT` badges under the H1. Added a "Live Deployment"
+section linking `https://dca-vault-frontend.vercel.app` — verified live first
+(`curl` → `200`, real Next.js HTML) rather than trusting the URL blind.
+
+Took an actual screenshot rather than a placeholder: Chrome + the Playwright
+CLI were both available locally, so `npx playwright screenshot
+--browser=chromium --viewport-size=1280,800 <url> docs/screenshot-landing.png`
+captured the live landing page directly (no script needed — Playwright's CLI
+has a built-in `screenshot` subcommand). Viewed the result before committing
+to confirm it actually shows the "Connect Freighter Wallet" screen and isn't
+a blank/error page. Saved to `docs/screenshot-landing.png` (new `docs/` dir),
+referenced with a standard markdown image tag.
+
+One correction to the requested copy: the Live Deployment note originally
+said schedule-creation signing was "still in progress," but that shipped and
+issue #1 closed on 2026-07-09 (Session 3) — only withdraw (#2) remains
+unsigned. Wrote the note to reflect that instead of publishing a stale claim.
+Did not touch the existing "Current limitations" section, which still has
+this same staleness (lists `create_schedule` and `deposit` as not
+implemented) — out of scope for today's additive-only instructions, flagged
+to the user instead.
+
+`npx tsc --noEmit` and `npm run build` both pass with zero errors after the
+README/docs-only change.
+
 ### Session 3 — 2026-07-09
 
 **Closed issue #1: `create_schedule` transaction signing via Freighter.**

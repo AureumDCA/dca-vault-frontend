@@ -1,8 +1,22 @@
 # DCA Vault Frontend
 
+[![CI](https://github.com/AureumDCA/dca-vault-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/AureumDCA/dca-vault-frontend/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 The user-facing web app for [AureumDCA](https://github.com/AureumDCA): vault creation, dashboard, and portfolio UI built with Next.js 16, Tailwind CSS, and the Freighter wallet extension.
 
 Users connect their Stellar wallet via Freighter, view their on-chain DCA vault status and swap history, and (coming soon) create and manage recurring swap schedules directly from the browser — all without handing custody of their funds to anyone.
+
+## Live Deployment
+
+**[https://dca-vault-frontend.vercel.app](https://dca-vault-frontend.vercel.app)**
+
+![AureumDCA landing page](docs/screenshot-landing.png)
+
+Connect your Freighter wallet to view the landing page and vault
+dashboard. Note: transaction signing for withdrawal is still in
+progress (tracked in open issues) — deposit and schedule creation
+are functional.
 
 ## Pages
 
