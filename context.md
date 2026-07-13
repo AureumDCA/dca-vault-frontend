@@ -4,6 +4,17 @@ This file tracks every edit, decision, and development session for the `dca-vaul
 
 ## Session log
 
+### Session 7 — 2026-07-13
+
+**README: refresh stale screenshot.** `docs/screenshot-landing.png` still
+showed the pre-rethem (white/indigo) landing page from Session 4, taken
+before the gold/dark-navy re-theme (Session 5) shipped. Confirmed the live
+Vercel deployment already serves the new theme (`curl` the live HTML,
+grepped for `bg-slate-950`/`amber-400` — present), then re-captured the
+screenshot directly from `https://dca-vault-frontend.vercel.app` via the
+Playwright CLI and replaced the file in place. No README text changed, only
+the image.
+
 ### Session 6 — 2026-07-12
 
 **CI: bump GitHub Actions to latest stable.** Same pair as
