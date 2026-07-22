@@ -46,6 +46,38 @@ export function buildDepositTx(
     .build();
 }
 
+/**
+ * Builds the unsigned Soroban transaction that calls `withdraw(owner,
+ * amount)` on the vault contract. Mirrors `buildDepositTx` exactly; the
+ * contract enforces `amount <= vault.balance` on-chain, but callers should
+ * still validate client-side first for a fast, clear error.
+ */
+export function buildWithdrawTx(
+  owner: string,
+  amountStroops: bigint,
+  accountSequence: string,
+  networkPassphrase: string
+): Transaction {
+  if (!CONTRACT_ID) throw new Error("NEXT_PUBLIC_CONTRACT_ID is not set");
+
+  const source = new Account(owner, accountSequence);
+  const contract = new Contract(CONTRACT_ID);
+
+  return new TransactionBuilder(source, {
+    fee: BASE_FEE,
+    networkPassphrase,
+  })
+    .addOperation(
+      contract.call(
+        "withdraw",
+        new Address(owner).toScVal(),
+        nativeToScVal(amountStroops, { type: "i128" })
+      )
+    )
+    .setTimeout(30)
+    .build();
+}
+
 export interface CreateScheduleParams {
   frequency: "Daily" | "Weekly" | "Monthly";
   amountPerExecutionStroops: bigint;

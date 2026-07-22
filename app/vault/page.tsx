@@ -7,6 +7,7 @@ import VaultStatus from "@/app/components/VaultStatus";
 import SwapHistory from "@/app/components/SwapHistory";
 import CreateSchedule from "@/app/components/CreateSchedule";
 import DepositForm from "@/app/components/DepositForm";
+import WithdrawForm from "@/app/components/WithdrawForm";
 import { getVault, getHistory, SwapEvent } from "@/lib/stellar";
 import { buildCreateScheduleTx, submitSignedTx } from "@/lib/contract";
 import { signTransaction } from "@/lib/freighter";
@@ -90,6 +91,15 @@ function VaultDashboard() {
         owner={owner}
         onSuccess={() => {
           // Re-fetch the authoritative vault state after a confirmed deposit.
+          loadVault();
+        }}
+      />
+
+      <WithdrawForm
+        owner={owner}
+        currentBalance={(vault as { balance: number }).balance}
+        onSuccess={() => {
+          // Re-fetch the authoritative vault state after a confirmed withdrawal.
           loadVault();
         }}
       />

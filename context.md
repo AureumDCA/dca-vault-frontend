@@ -4,6 +4,36 @@ This file tracks every edit, decision, and development session for the `dca-vaul
 
 ## Session log
 
+### Session 8 — 2026-07-22
+
+**Closed issue #2: withdraw UI and transaction signing via Freighter.**
+
+`WithdrawForm` didn't exist — there was no way to pull XLM back out of a
+vault. Built it mirroring `DepositForm`'s established shape exactly:
+
+- **`lib/contract.ts`**: added `buildWithdrawTx(owner, amountStroops,
+  accountSequence, networkPassphrase)`, a straight mirror of
+  `buildDepositTx` calling `withdraw(owner, amount)` instead of `deposit`.
+- **`app/components/WithdrawForm.tsx`** (new): same
+  simulate → assemble → Freighter sign → submit/poll → `readVaultBalance`
+  flow as `DepositForm`. `currentBalance` is accepted in **stroops** (not
+  XLM as the issue's task description implied) to match how `vault.balance`
+  and `readVaultBalance`/`onSuccess(newBalance)` already flow through this
+  app everywhere else (see `VaultStatus.tsx`'s `formatAmount`); the
+  component converts to XLM internally for display and validation, so
+  `page.tsx` can pass `vault.balance` straight through with no conversion at
+  the call site. Client-side validation (entered amount vs. current balance)
+  runs before any network call, showing an immediate error rather than
+  relying on the contract's own `amount > vault.balance` panic.
+- **`app/vault/page.tsx`**: rendered `WithdrawForm` below `DepositForm`,
+  wired to the existing `loadVault` callback on success.
+
+`npx tsc --noEmit` and `npm run build` both pass with zero errors. **Not
+verified end-to-end in a real browser** — no live Freighter session or
+on-chain withdrawal was actually exercised this session; a clean build only
+proves the code compiles, not that a real withdraw transaction succeeds on
+testnet.
+
 ### Session 7 — 2026-07-13
 
 **README: refresh stale screenshot.** `docs/screenshot-landing.png` still
