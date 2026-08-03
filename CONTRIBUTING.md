@@ -28,7 +28,7 @@ Open [http://localhost:3000](http://localhost:3000). You'll need Freighter insta
 | Variable | Description | Example |
 | --- | --- | --- |
 | `NEXT_PUBLIC_API_URL` | Base URL of the running `dca-vault-backend` | `http://localhost:3001` |
-| `NEXT_PUBLIC_CONTRACT_ID` | Deployed dca-vault-contract address on testnet | `CDJF7V5NLGKAV7RHTBCR3LMHC7MUS7IWL6KYSLO6ZWEEJYJGWUVGEDEO` |
+| `NEXT_PUBLIC_CONTRACT_ID` | Deployed dca-vault-contract address on testnet | `CDUJQQ742DH36VLLUQ4PGIQFVIV6OU4EX7HYK5STV5VUUQJIFK7BLQYC` |
 | `NEXT_PUBLIC_NETWORK_PASSPHRASE` | Stellar network identifier | `Test SDF Network ; September 2015` |
 
 All three variables must be set for the app to function. `NEXT_PUBLIC_*` variables are inlined at build time by Next.js and are visible in the browser bundle — do not put secrets here.
